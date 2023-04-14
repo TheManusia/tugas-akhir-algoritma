@@ -1,4 +1,4 @@
-from Model.Barang import Barang
+from model.barang import Barang
 
 
 def currencyFormat(number):
@@ -32,13 +32,13 @@ class Kasir:
             menu = int(input("\nPilih menu: "))
             print("")
             if menu == 1:
-                self.__showBarang()
+                self.__show_barang()
             elif menu == 2:
-                self.__showCart()
+                self.__show_cart()
             elif menu == 3:
-                self.__addToCart()
+                self.__add_to_cart()
             elif menu == 4:
-                self.__removeFromCart()
+                self.__remove_from_cart()
             elif menu == 5:
                 self.__checkout()
             elif menu == 6:
@@ -46,7 +46,7 @@ class Kasir:
             else:
                 print("Menu tidak tersedia")
 
-    def __showBarang(self):
+    def __show_barang(self):
         print("Daftar Barang:\n")
         for b in self.barang:
             print(b)
@@ -54,7 +54,7 @@ class Kasir:
         if len(self.barang) == 0:
             print("Barang masih kosong")
 
-    def __showCart(self):
+    def __show_cart(self):
         print("Keranjang:")
         for c in self.cart:
             print(c)
@@ -62,8 +62,8 @@ class Kasir:
         if len(self.cart) == 0:
             print("Keranjang masih kosong")
 
-    def __addToCart(self):
-        self.__showBarang()
+    def __add_to_cart(self):
+        self.__show_barang()
         print("")
         id_barang = int(input("Masukkan ID Barang: "))
         qty = int(input("Masukkan Jumlah Barang: "))
@@ -88,8 +88,8 @@ class Kasir:
             else:
                 print("Barang tidak ditemukan")
 
-    def __removeFromCart(self):
-        self.__showCart()
+    def __remove_from_cart(self):
+        self.__show_cart()
         id_barang = int(input("Masukkan ID Barang: "))
         qty = int(input("Masukkan Jumlah Barang: "))
         for c in self.cart:
