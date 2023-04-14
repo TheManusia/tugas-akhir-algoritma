@@ -1,0 +1,25 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "kasir"
+version = "0.0.1"
+authors = [
+    { name="TheManusia", email="iianfarii@gmail.com" },
+]
+description = "Kasir CLI dengan MySql"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: DO WHAT THE FUCK YOU WANT TO PUBLIC License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "mysql-connector-python ~= 8.0.32",
+    "python-dotenv ~= 1.0.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/TheManusia"
