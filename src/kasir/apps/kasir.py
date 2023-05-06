@@ -1,4 +1,5 @@
-from model.barang import Barang
+from src.kasir.model.barang import Barang
+from src.kasir.tools.db import DbHelper
 
 
 def currencyFormat(number):
@@ -8,16 +9,17 @@ def currencyFormat(number):
 class Kasir:
 
     def __init__(self):
-        self.barang = [
-            Barang(1, "Buku", 10000, 10),
-            Barang(2, "Pensil", 5000, 20),
-            Barang(3, "Penghapus", 3000, 30),
-            Barang(4, "Penggaris", 2000, 40),
-            Barang(5, "Penghapus Kertas", 1000, 50),
-            Barang(6, "Penghapus Karet", 500, 60),
-            Barang(7, "Penghapus Pensil", 100, 70),
-        ]
+        self.db = DbHelper()
+        self.barang = []
         self.cart = []
+        self.__fetch_barang()
+
+    def __fetch_barang(self):
+        self.barang.clear()
+        cursor = self.db.select("barang", "*", "stok > 0")
+        if cursor:
+            for row in cursor:
+                self.barang.append(Barang(row[0], row[1], row[2], row[3]))
 
     def run(self):
         print("Selamat datang di Toko Buku CLI")
@@ -47,6 +49,9 @@ class Kasir:
                 print("Menu tidak tersedia")
 
     def __show_barang(self):
+        # Update data barang
+        self.__fetch_barang()
+
         print("Daftar Barang:\n")
         for b in self.barang:
             print(b)
@@ -81,8 +86,9 @@ class Kasir:
 
                     self.cart.append(Barang(b.id_barang, b.nama, b.harga, qty))
 
-                    # Kurangi stok barang di daftar barang
+                    # Kurangi stok barang di database
                     b.stok -= qty
+                    self.db.update("barang", f"stok = {b.stok}", f"id_barang = {b.id_barang}")
                 else:
                     print("Stok tidak cukup")
             else:
@@ -104,6 +110,7 @@ class Kasir:
                 for b in self.barang:
                     if b.id_barang == id_barang:
                         b.stok += qty
+                        self.db.update("barang", f"stok = {b.stok}", f"id_barang = {b.id_barang}")
                         break
             else:
                 print("Barang tidak ditemukan")
@@ -139,10 +146,10 @@ class Kasir:
         print("===================================")
         print("===================================")
 
+        # Menambahkan detail transaksi ke database
+        id=self.db.insert("transaksi", "tanggal, total", f"NOW(), {total}")
+        for c in self.cart:
+            self.db.insert("detail_transaksi", "id_transaksi, id_barang, qty", f"{id}, {c.id_barang}, {c.stok}")
+
         # Mengosongkan keranjang
         self.cart.clear()
-
-        # Menghapus barang yang stoknya habis
-        for b in self.barang:
-            if b.stok == 0:
-                self.barang.remove(b)
