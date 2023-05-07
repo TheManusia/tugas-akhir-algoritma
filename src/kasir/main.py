@@ -1,7 +1,6 @@
-from apps.kasir import Kasir
 from src.kasir.apps.core import Core
 from src.kasir.model.user import User
-from tools.tools import Tools
+from src.kasir.tools.tools import encrypt_password
 from tools.db import DbHelper
 from dotenv import load_dotenv
 
@@ -27,6 +26,7 @@ if __name__ == '__main__':
                                             " id_transaksi INT,"
                                             " id_barang INT,"
                                             " qty INT,"
+                                            " total INT,"
                                             " FOREIGN KEY (id_transaksi) REFERENCES transaksi(id_transaksi),"
                                             " FOREIGN KEY (id_barang) REFERENCES barang(id_barang)")
         print("Membuat tabel user")
@@ -44,13 +44,13 @@ if __name__ == '__main__':
             print("Tabel user belum terisi")
 
             print("Membuat user admin")
-            pw=Tools().encrypt_password("admin")
+            pw= encrypt_password("admin")
             db.insert("user", "username, password, role", "'admin', '"+pw+"', 'admin'")
             print("Membuat user kasir")
-            pw=Tools().encrypt_password("kasir")
+            pw= encrypt_password("kasir")
             db.insert("user", "username, password, role", "'kasir', '"+pw+"', 'kasir'")
             print("Membuat user gudang")
-            pw=Tools().encrypt_password("gudang")
+            pw= encrypt_password("gudang")
             db.insert("user", "username, password, role", "'gudang', '"+pw+"', 'gudang'")
 
     else:
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     while True:
         username = input("Masukkan username: ")
         password = input("Masukkan password: ")
-        password = Tools().encrypt_password(password)
+        password = encrypt_password(password)
         user = db.login(username, password)
         if user:
             print("Login berhasil")

@@ -28,6 +28,7 @@ class Gudang:
             elif menu == 4:
                 self.__update_barang()
             elif menu == 5:
+                self.db.exit()
                 break
 
     def __fetch_barang(self):

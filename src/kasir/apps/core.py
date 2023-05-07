@@ -1,7 +1,7 @@
 from src.kasir.apps.gudang import Gudang
 from src.kasir.apps.kasir import Kasir
 from src.kasir.tools.db import DbHelper
-from src.kasir.tools.tools import Tools
+from src.kasir.tools.tools import *
 
 
 class Core:
@@ -9,7 +9,6 @@ class Core:
     def __init__(self, user):
         self.user = user
         self.__db = DbHelper()
-        self.__tools = Tools()
 
     def run(self):
         print(f"Selamat datang {self.user.username} di Toko Buku CLI")
@@ -38,7 +37,8 @@ class Core:
             print("3. Tampilkan User")
             print("4. Menu Kasir")
             print("5. Menu Gudang")
-            print("6. Keluar")
+            print("6. Tampilkan Transaksi")
+            print("7. Keluar")
             menu = int(input("\nPilih menu: "))
             print("")
             if menu == 1:
@@ -52,6 +52,9 @@ class Core:
             elif menu == 5:
                 self.__gudang_menu()
             elif menu == 6:
+                self.__show_transaksi()
+            elif menu == 7:
+                self.__db.exit()
                 break
 
     def __show_user(self):
@@ -72,9 +75,9 @@ class Core:
         username = input("Masukkan username: ")
         password = input("Masukkan password: ")
         role = input("Masukkan role: ")
-        if self.__tools.confirm("Tambah user?"):
+        if confirm("Tambah user?"):
             self.__db.insert("user", "username, password, role",
-                             f"'{username}', '{self.__tools.encrypt_password(password)}', '{role}'")
+                             f"'{username}', '{encrypt_password(password)}', '{role}'")
             print("User berhasil ditambahkan")
 
     def __remove_user(self):
@@ -82,6 +85,26 @@ class Core:
         print("==========")
         self.__show_user()
         username = input("Masukkan username: ")
-        if self.__tools.confirm("Hapus user?"):
+        if confirm("Hapus user?"):
             self.__db.delete("user", f"username = '{username}'")
             print("User berhasil dihapus")
+
+    def __show_transaksi(self):
+        print("Daftar Transaksi")
+        print("================")
+        cursor = self.__db.select("transaksi", "*", "1")
+        if cursor:
+            for row in cursor:
+                detail = self.__db.select("detail_transaksi", "*", f"id_transaksi = '{row[0]}'")
+                print(f"ID Transaksi: {row[0]}")
+                print(f"Tanggal: {row[1]}")
+                print(f"Total: {currencyFormat(row[2])}")
+                print("=====")
+                i = 1
+                for d in detail:
+                    barang = self.__db.select("barang", "*", f"id_barang = '{d[2]}'")[0]
+                    print(f"{i}. {barang[1]} x {d[3]} = {currencyFormat(d[4])}")
+                    i += 1
+                    print("")
+        else:
+            print("Transaksi masih kosong")

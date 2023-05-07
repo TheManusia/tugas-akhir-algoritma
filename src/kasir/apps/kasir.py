@@ -1,9 +1,6 @@
 from src.kasir.model.barang import Barang
 from src.kasir.tools.db import DbHelper
-
-
-def currencyFormat(number):
-    return f"Rp{'{:,.2f}'.format(number)}"
+from src.kasir.tools.tools import *
 
 
 class Kasir:
@@ -44,6 +41,7 @@ class Kasir:
             elif menu == 5:
                 self.__checkout()
             elif menu == 6:
+                self.db.exit()
                 break
             else:
                 print("Menu tidak tersedia")
@@ -147,9 +145,10 @@ class Kasir:
         print("===================================")
 
         # Menambahkan detail transaksi ke database
-        id=self.db.insert("transaksi", "tanggal, total", f"NOW(), {total}")
+        id = self.db.insert("transaksi", "tanggal, total", f"NOW(), {total}")
         for c in self.cart:
-            self.db.insert("detail_transaksi", "id_transaksi, id_barang, qty", f"{id}, {c.id_barang}, {c.stok}")
+            self.db.insert("detail_transaksi", "id_transaksi, id_barang, qty, total",
+                           f"{id}, {c.id_barang}, {c.stok}, {c.stok * c.harga}")
 
         # Mengosongkan keranjang
         self.cart.clear()
