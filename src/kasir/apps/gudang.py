@@ -1,5 +1,6 @@
 from src.kasir.model.barang import Barang
 from src.kasir.tools.db import DbHelper
+from src.kasir.tools.tools import *
 
 
 class Gudang:
@@ -61,7 +62,7 @@ class Gudang:
         self.__show_barang()
         id_barang = input("Masukkan ID Barang: ")
         barang = self.__get_barang_by_id(id_barang)
-        if barang:
+        if barang and confirm("Apakah anda yakin ingin menghapus barang ini?"):
             self.db.delete("barang", f"id_barang='{id_barang}'")
             print("Berhasil menghapus barang")
         else:
@@ -79,7 +80,7 @@ class Gudang:
             nama = input("Masukkan Nama Barang: ")
             harga = int(input("Masukkan Harga Barang: "))
             stok = int(input("Masukkan Stok Barang: "))
-            if harga > 0 and stok > 0:
+            if harga > 0 and stok > 0 and confirm("Apakah anda yakin ingin mengupdate barang ini?"):
                 self.db.update("barang", f"nama='{nama}'", f"id_barang='{id_barang}'")
                 self.db.update("barang", f"harga='{harga}'", f"id_barang='{id_barang}'")
                 self.db.update("barang", f"stok='{stok}'", f"id_barang='{id_barang}'")
@@ -106,7 +107,7 @@ class Gudang:
         nama = input("Masukkan Nama Barang: ")
         harga = int(input("Masukkan Harga Barang: "))
         stok = int(input("Masukkan Stok Barang: "))
-        if harga > 0 and stok > 0:
+        if harga > 0 and stok > 0 and confirm("Apakah anda yakin ingin menambahkan barang ini?"):
             self.db.insert("barang", "nama, harga, stok", f"'{nama}', {harga}, {stok}")
             print("Berhasil menambahkan barang")
         else:
@@ -120,7 +121,7 @@ class Gudang:
         qty = int(input("Masukkan Jumlah Barang: "))
         if qty > 0:
             barang = self.__get_barang_by_id(id_barang)
-            if barang:
+            if barang and confirm("Apakah anda yakin ingin menambahkan barang ini?"):
                 self.db.update("barang", "stok = stok + " + str(qty), "id_barang = " + str(id_barang))
                 print("Berhasil menambahkan barang")
             else:
