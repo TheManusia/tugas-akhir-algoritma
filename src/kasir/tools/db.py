@@ -24,7 +24,6 @@ class DbHelper:
     def create_table(self, name, fields):
         cursor = self.__db.cursor()
         sql = f"CREATE TABLE IF NOT EXISTS {name} ({fields})"
-        print(sql)
         cursor.execute(sql)
 
     def insert(self, table, fields, values):
@@ -55,7 +54,6 @@ class DbHelper:
     def update(self, table, set, where):
         cursor = self.__db.cursor()
         sql = f"UPDATE {table} SET {set} WHERE {where}"
-        print(sql)
         cursor.execute(sql)
         self.__db.commit()
 

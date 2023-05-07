@@ -44,14 +44,14 @@ if __name__ == '__main__':
             print("Tabel user belum terisi")
 
             print("Membuat user admin")
-            pw= encrypt_password("admin")
-            db.insert("user", "username, password, role", "'admin', '"+pw+"', 'admin'")
+            pw = encrypt_password("admin")
+            db.insert("user", "username, password, role", "'admin', '" + pw + "', 'admin'")
             print("Membuat user kasir")
-            pw= encrypt_password("kasir")
-            db.insert("user", "username, password, role", "'kasir', '"+pw+"', 'kasir'")
+            pw = encrypt_password("kasir")
+            db.insert("user", "username, password, role", "'kasir', '" + pw + "', 'kasir'")
             print("Membuat user gudang")
-            pw= encrypt_password("gudang")
-            db.insert("user", "username, password, role", "'gudang', '"+pw+"', 'gudang'")
+            pw = encrypt_password("gudang")
+            db.insert("user", "username, password, role", "'gudang', '" + pw + "', 'gudang'")
 
     else:
         print("Gagal terkoneksi ke database")
