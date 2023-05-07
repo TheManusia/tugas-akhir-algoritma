@@ -1,4 +1,6 @@
 from apps.kasir import Kasir
+from src.kasir.apps.core import Core
+from src.kasir.model.user import User
 from tools.tools import Tools
 from tools.db import DbHelper
 from dotenv import load_dotenv
@@ -68,5 +70,6 @@ if __name__ == '__main__':
             print("Username atau password salah")
 
     db.exit()
-    kasir = Kasir()
-    kasir.run()
+
+    core = Core(User(user[1], user[2], user[3]))
+    core.run()

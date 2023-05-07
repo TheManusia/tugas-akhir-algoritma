@@ -12,6 +12,7 @@ class Core:
         self.__tools = Tools()
 
     def run(self):
+        print(f"Selamat datang {self.user.username} di Toko Buku CLI")
         if self.user.role == "admin":
             self.__admin_menu()
         elif self.user.role == "kasir":
@@ -59,9 +60,8 @@ class Core:
         cursor = self.__db.select("user", "*", "1")
         if cursor:
             for row in cursor:
-                print(f"Username: {row[0]}")
-                print(f"Password: {row[1]}")
-                print(f"Role: {row[2]}")
+                print(f"Username: {row[1]}")
+                print(f"Role: {row[3]}")
                 print("")
         else:
             print("User masih kosong")

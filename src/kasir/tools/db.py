@@ -55,6 +55,7 @@ class DbHelper:
     def update(self, table, set, where):
         cursor = self.__db.cursor()
         sql = f"UPDATE {table} SET {set} WHERE {where}"
+        print(sql)
         cursor.execute(sql)
         self.__db.commit()
 

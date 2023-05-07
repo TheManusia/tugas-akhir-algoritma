@@ -47,10 +47,12 @@ class Gudang:
             print("Barang masih kosong")
 
     def __get_barang_by_id(self, id_barang):
-        for b in self.barang:
-            if b.id_barang == id_barang:
-                return b
-        return None
+        barang = None
+        result = self.db.select("barang", "*", f"id_barang='{id_barang}'")
+        if result:
+            row = result[0]
+            barang = Barang(row[0], row[1], row[2], row[3])
+        return barang
 
     def __remove_barang(self):
         print("Hapus Barang")
@@ -77,9 +79,9 @@ class Gudang:
             harga = int(input("Masukkan Harga Barang: "))
             stok = int(input("Masukkan Stok Barang: "))
             if harga > 0 and stok > 0:
-                self.db.update("barang", f"nama={nama}", f"id_barang='{id_barang}'")
-                self.db.update("barang", f"harga={harga}", f"id_barang='{id_barang}'")
-                self.db.update("barang", f"stok={stok}", f"id_barang='{id_barang}'")
+                self.db.update("barang", f"nama='{nama}'", f"id_barang='{id_barang}'")
+                self.db.update("barang", f"harga='{harga}'", f"id_barang='{id_barang}'")
+                self.db.update("barang", f"stok='{stok}'", f"id_barang='{id_barang}'")
                 print("Berhasil mengupdate barang")
             else:
                 print("Harga atau stok barang tidak valid")
@@ -104,7 +106,7 @@ class Gudang:
         harga = int(input("Masukkan Harga Barang: "))
         stok = int(input("Masukkan Stok Barang: "))
         if harga > 0 and stok > 0:
-            self.db.insert("barang", "(nama, harga, stok)", (nama, harga, stok))
+            self.db.insert("barang", "nama, harga, stok", f"'{nama}', {harga}, {stok}")
             print("Berhasil menambahkan barang")
         else:
             print("Harga atau stok barang tidak valid")
