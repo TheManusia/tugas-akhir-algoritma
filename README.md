@@ -21,20 +21,20 @@ Program ini juga menggunakan database untuk menyimpan data barang dan transaksi.
   * Jika ingin menggunakan web server seperti XAMPP, silahkan mengunjungi website resminya di [XAMPP](https://www.apachefriends.org/download.html)
   * Atau bisa juga menggunakan Laragon yang dapat diunduh di [Laragon](https://laragon.org/download/)
 * Install library mysql-connector-python dengan cara menjalankan perintah berikut di terminal 
-```
-pip install mysql-connector-python
+```sh
+$ pip install mysql-connector-python
 ```
 * Install library dotenv dengan cara menjalankan perintah berikut di terminal 
-```
-pip install python-dotenv
+```sh
+$ pip install python-dotenv
 ```
 * Isi file .env dengan data yang sesuai
 
 ### Executing program
 
 * Jalankan program dengan cara menjalankan perintah berikut di terminal
-```
-python project/main.py
+```sh
+$ python project/main.py
 ```
 
 ## Help
